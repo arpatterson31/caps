@@ -18,3 +18,5 @@ function orderPickup(order) {
     events.emit('delivered', order);
   }, 3000)
 }
+
+module.exports = { orderPickup }
