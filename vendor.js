@@ -12,17 +12,17 @@ function newOrder() {
       storeName: process.env.STORE_NAME,
       orderId: faker.datatype.uuid(),
       customerName: faker.name.findName(),
-      address: `${faker.address.streetAddress()}, ${faker.address.city()}, ${faker.address.state()}, ${faker.address.zipCode()}`
+      address: `${faker.address.streetAddress()}, ${faker.address.city()}`
     }
 
     events.emit('pickup', order);
   }, 5000)
 }
 
-// events.on('delivered', thankYou);
-// function thankYou(order) {
-//  console.log(`VENDOR: Thank you for delivering ${order.orderId}`);
-// }
+events.on('delivered', thankYou);
+function thankYou(order) {
+ console.log(`VENDOR: Thank you for delivering ${order.orderId}`);
+}
 
 module.exports = { newOrder };
 
