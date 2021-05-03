@@ -10,4 +10,4 @@
 
 ### UML / Application Wiring Diagram
 
-<!-- ![Lab 11 UML](assets/) -->
+![Lab 11 UML](assets/lab11-uml.jpg)
