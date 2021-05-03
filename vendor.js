@@ -4,6 +4,8 @@ require('dotenv').config();
 const events = require('./events.js');
 const faker = require('faker');
 
+events.on('new-order', newOrder);
+
 function newOrder() {
   setInterval(() => {
     let order = {
@@ -17,8 +19,9 @@ function newOrder() {
   }, 5000)
 }
 
-// function delivered() {
-
+// events.on('delivered', thankYou);
+// function thankYou(order) {
+//  console.log(`VENDOR: Thank you for delivering ${order.orderId}`);
 // }
 
 module.exports = { newOrder };
