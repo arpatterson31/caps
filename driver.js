@@ -10,5 +10,11 @@ function orderPickup(order) {
     console.log(`DRIVER: picked up ${order.orderId}`);
 
     events.emit('in-transit', order);
-  }, 1000)
+  }, 1000);
+
+  setTimeout(() => {
+    console.log(`DRIVER: delivered ${order.orderId}`);
+
+    events.emit('delivered', order);
+  }, 3000)
 }
