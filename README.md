@@ -8,6 +8,8 @@
 
 ## Links and Resources
 
+- Thank you thank you TA Kory for helping me bring in the last component with the caps.js file!
+
 - [Pull Request events to main](https://github.com/arpatterson31/caps/pull/1)
 
 ### UML / Application Wiring Diagram

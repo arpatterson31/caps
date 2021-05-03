@@ -3,26 +3,34 @@
 require('dotenv').config();
 const events = require('./events.js');
 const faker = require('faker');
+const storeName = process.env.STORE_NAME;
 
-events.on('new-order', newOrder);
+events.on('start', newOrder);
+events.on('delivered', thankYou);
 
 function newOrder() {
   setInterval(() => {
     let order = {
-      storeName: process.env.STORE_NAME,
+      storeName: storeName,
       orderId: faker.datatype.uuid(),
       customerName: faker.name.findName(),
       address: `${faker.address.streetAddress()}, ${faker.address.city()}`
     }
 
-    events.emit('pickup', order);
+    let event = {
+      event: 'pickup',
+      timeStamp: new Date(),
+      payload: order
+    }
+
+    events.emit('pickup', event);
   }, 5000)
 }
 
-events.on('delivered', thankYou);
 function thankYou(order) {
- console.log(`VENDOR: Thank you for delivering ${order.orderId}`);
+  console.log(order);
+  console.log(`VENDOR: Thank you for delivering ${order.payload.orderId}`);
 }
 
-module.exports = { newOrder };
+module.exports = { newOrder, thankYou };
 
