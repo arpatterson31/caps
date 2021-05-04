@@ -3,7 +3,7 @@
 require('dotenv').config();
 const PORT = process.env.PORT || 3000;
 
-const io = reqire('socket.io')(PORT);
+const io = require('socket.io')(PORT);
 
 const caps = io.of('/caps');
 

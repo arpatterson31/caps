@@ -16,16 +16,24 @@ const capsConnection = io.connect(`${HOST}/caps`);
 capsConnection.on('pickup', payload => {
   setTimeout(() => {
     console.log(`Picking up ${payload.payload.orderId}`);
-    capsConnection.emit('in-transit', { event: 'in-transit', time: new Date(), payload: payload });
-  }, 1500);
-});
 
-capsConnection.on('pickup', payload => {
+    payload.event = 'in-transit';
+    payload.time = new Date();
+
+    capsConnection.emit('in-transit', payload);
+  }, 1500);
+
   setTimeout(() => {
     console.log(`delivered ${payload.payload.orderId}`);
-    capsConnection.emit('delivered', { event: 'delivered', time: new Date(), payload: payload })
+  
+    payload.event = 'delivered';
+    payload.time = new Date();
+  
+    capsConnection.emit('delivered', payload);
   }, 3000);
 });
+
+
 
 // events.on('pickup', orderPickup);
 // events.on('in-transit', inTransit);
