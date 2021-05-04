@@ -1,10 +1,10 @@
 'use strict';
 
 require('dotenv').config();
-const events = require('./events.js');
-require('./vendor.js');
+// const events = require('./events.js');
+// require('./vendor.js');
 
-const { Socket } = require('socket.io-client');
+// const { Socket } = require('socket.io-client');
 const io = require('socket.io-client');
 
 const HOST = process.env.HOST;
@@ -23,6 +23,9 @@ capsConnection.on('pickup', payload => {
     capsConnection.emit('in-transit', payload);
   }, 1500);
 
+});
+
+capsConnection.on('in-transit', payload => {
   setTimeout(() => {
     console.log(`delivered ${payload.payload.orderId}`);
   
@@ -31,8 +34,8 @@ capsConnection.on('pickup', payload => {
   
     capsConnection.emit('delivered', payload);
   }, 3000);
-});
 
+});
 
 
 // events.on('pickup', orderPickup);

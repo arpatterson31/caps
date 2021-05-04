@@ -9,6 +9,7 @@ const caps = io.of('/caps');
 
 io.on('connection', socket => {
   console.log('client:', socket.id);
+  
 });
 
 caps.on('connection', socket => {
@@ -19,12 +20,12 @@ caps.on('connection', socket => {
 
   socket.on('in-transit', payload => {
     console.log('EVENT: ', payload); 
-    io.to(socket.id).emit('in-transit', payload); // emit to the vendor
+    socket.emit('in-transit', payload); // emit to the vendor
   });
 
   socket.on('delivered', payload => {
     console.log('EVENT: ', payload); 
-    io.to(socket.id).emit('in-transit', payload); // emit to the vendor
+    socket.broadcast.emit('delivered', payload); // emit to the vendor
   });
 });
 
