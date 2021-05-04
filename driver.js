@@ -12,30 +12,45 @@ const HOST = process.env.HOST;
 // const capsConnection = io.connect(HOST);
 const capsConnection = io.connect(`${HOST}/caps`);
 
-events.on('pickup', orderPickup);
-events.on('in-transit', inTransit);
 
-function orderPickup(order) {
+capsConnection.on('pickup', payload => {
   setTimeout(() => {
-    console.log(order);
-    console.log(`DRIVER: picked up ${order.payload.orderId}`);
+    console.log(`Picking up ${payload.payload.orderId}`);
+    capsConnection.emit('in-transit', { event: 'in-transit', time: new Date(), payload: payload });
+  }, 1500);
+});
 
-    order.event = 'in-transit';
-
-    events.emit('in-transit', order);
-  }, 1000);
-
-}
-
-function inTransit(order) {
+capsConnection.on('pickup', payload => {
   setTimeout(() => {
-    console.log(order)
-    console.log(`DRIVER: delivered ${order.payload.orderId}`);
+    console.log(`delivered ${payload.payload.orderId}`);
+    capsConnection.emit('delivered', { event: 'delivered', time: new Date(), payload: payload })
+  }, 3000);
+});
 
-    order.event = 'delivered';
+// events.on('pickup', orderPickup);
+// events.on('in-transit', inTransit);
 
-    events.emit('delivered', order);
-  }, 3000)
-}
+// function orderPickup(order) {
+//   setTimeout(() => {
+//     console.log(order);
+//     console.log(`DRIVER: picked up ${order.payload.orderId}`);
 
-module.exports = { orderPickup }
+//     order.event = 'in-transit';
+
+//     events.emit('in-transit', order);
+//   }, 1000);
+
+// }
+
+// function inTransit(order) {
+//   setTimeout(() => {
+//     console.log(order)
+//     console.log(`DRIVER: delivered ${order.payload.orderId}`);
+
+//     order.event = 'delivered';
+
+//     events.emit('delivered', order);
+//   }, 3000)
+// }
+
+// module.exports = { orderPickup }

@@ -13,22 +13,25 @@ io.on('connection', socket => {
 
 caps.on('connection', socket => {
   socket.on('pickup', payload => {
-    console.log('pickup', payload); // emit to all in the namespace
+    console.log('EVENT: ', payload); 
+    socket.broadcast.emit('pickup', payload); // emit to all in the namespace
   });
 
   socket.on('in-transit', payload => {
-    console.log('in-transit', payload); // emit to all in the namespace
+    console.log('EVENT: ', payload); 
+    io.to(socket.id).emit('in-transit', payload); // emit to the vendor
   });
 
   socket.on('delivered', payload => {
-    console.log('delivered', payload); // emit to all in the namespace
+    console.log('EVENT: ', payload); 
+    io.to(socket.id).emit('in-transit', payload); // emit to the vendor
   });
 });
 
 
 
-const events = require('./events.js');
-require('./vendor.js');
-require('./driver.js');
+// const events = require('./events.js');
+// require('./vendor.js');
+// require('./driver.js');
 
-events.emit('start');
+// events.emit('start');
