@@ -1,7 +1,16 @@
 'use strict';
 
+require('dotenv').config();
 const events = require('./events.js');
 require('./vendor.js');
+
+const { Socket } = require('socket.io-client');
+const io = require('socket.io-client');
+
+const HOST = process.env.HOST;
+
+// const capsConnection = io.connect(HOST);
+const capsConnection = io.connect(`${HOST}/caps`);
 
 events.on('pickup', orderPickup);
 events.on('in-transit', inTransit);
