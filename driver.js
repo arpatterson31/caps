@@ -1,32 +1,32 @@
 'use strict';
 
-const events = require('./events.js');
-require('./vendor.js');
+require('dotenv').config();
+const io = require('socket.io-client');
 
-events.on('pickup', orderPickup);
-events.on('in-transit', inTransit);
+const HOST = process.env.HOST;
 
-function orderPickup(order) {
+const capsConnection = io.connect(`${HOST}/caps`);
+
+capsConnection.on('pickup', payload => {
   setTimeout(() => {
-    console.log(order);
-    console.log(`DRIVER: picked up ${order.payload.orderId}`);
+    console.log(`Picking up ${payload.payload.orderId}`);
 
-    order.event = 'in-transit';
+    payload.event = 'in-transit';
+    payload.time = new Date();
 
-    events.emit('in-transit', order);
-  }, 1000);
+    capsConnection.emit('in-transit', payload);
+  }, 1500);
 
-}
+});
 
-function inTransit(order) {
+capsConnection.on('in-transit', payload => {
   setTimeout(() => {
-    console.log(order)
-    console.log(`DRIVER: delivered ${order.payload.orderId}`);
+    console.log(`delivered ${payload.payload.orderId}`);
 
-    order.event = 'delivered';
+    payload.event = 'delivered';
+    payload.time = new Date();
 
-    events.emit('delivered', order);
-  }, 3000)
-}
+    capsConnection.emit('delivered', payload);
+  }, 3000);
 
-module.exports = { orderPickup }
+});
