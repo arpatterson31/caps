@@ -20,3 +20,6 @@
 
 - Lab 12 UML - Socket.io
 ![Lab 12 UML](assets/lab12-uml.jpg)
+
+- Lab 12 Terminal Results
+![Lab 12 Terminal Results](assets/lab12-terminal.png)
