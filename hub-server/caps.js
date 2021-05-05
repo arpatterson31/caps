@@ -1,9 +1,9 @@
 'use strict';
 
 require('dotenv').config();
-const PORT = process.env.PORT || 3000;
+const IO_PORT = process.env.PORT || 3000;
 
-const io = require('socket.io')(PORT);
+const io = require('socket.io')(IO_PORT);
 
 const caps = io.of('/caps');
 
@@ -13,19 +13,26 @@ io.on('connection', socket => {
 });
 
 caps.on('connection', socket => {
+
+  socket.on('join', room => {
+    console.log('room name: ', room);
+
+    socket.join(room);
+  });
+
   socket.on('pickup', payload => {
     console.log('EVENT: ', payload);
-    socket.broadcast.emit('pickup', payload); // emit to all in the namespace
+    caps.emit('pickup', payload); // emit to all in the namespace
   });
 
   socket.on('in-transit', payload => {
     console.log('EVENT: ', payload);
-    socket.emit('in-transit', payload); // emit to the vendor
+    caps.emit('in-transit', payload); 
   });
 
   socket.on('delivered', payload => {
     console.log('EVENT: ', payload);
-    socket.broadcast.emit('delivered', payload); // emit to the vendor
+    caps.to(payload.payload.store).emit('delivered', payload); 
   });
 });
 

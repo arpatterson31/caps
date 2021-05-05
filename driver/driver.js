@@ -3,7 +3,7 @@
 require('dotenv').config();
 const io = require('socket.io-client');
 
-const HOST = process.env.HOST;
+const HOST = process.env.HOST || 'http://localhost:3000';
 
 const capsConnection = io.connect(`${HOST}/caps`);
 
@@ -21,7 +21,7 @@ capsConnection.on('pickup', payload => {
 
 capsConnection.on('in-transit', payload => {
   setTimeout(() => {
-    console.log(`delivered ${payload.payload.orderId}`);
+    console.log(`Delivered ${payload.payload.orderId}`);
 
     payload.event = 'delivered';
     payload.time = new Date();
