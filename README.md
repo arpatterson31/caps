@@ -1,4 +1,4 @@
-# Lab: Class 12
+# Lab: Class 13
 
 ## Project: CAPS (Code Academy Parcel Service)
 
