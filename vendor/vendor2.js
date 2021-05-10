@@ -3,7 +3,7 @@
 require('dotenv').config();
 
 const faker = require('faker');
-const store = 'acme-widgets';
+const store = '1-206-flowers';
 
 const io = require('socket.io-client');
 
@@ -12,6 +12,13 @@ const HOST = process.env.HOST || 'http://localhost:3000';
 const capsConnection = io.connect(`${HOST}/caps`);
 
 capsConnection.emit('join', store);
+capsConnection.emit('getAll', store);
+
+capsConnection.on('message', message => {
+  console.log('messages: ', message.payload.payload);
+  capsConnection.emit('received', message.payload.payload);
+});
+
 
 setInterval(() => {
   let payload = {

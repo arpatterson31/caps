@@ -12,7 +12,15 @@ io.on('connection', socket => {
 
 });
 
+const store = 'acme-widgets';
+const store2 =  '1-206-flowers';
+
+caps.emit('getAll', store);
+caps.emit('getAll', store2);
+
 caps.on('connection', socket => {
+
+
 
   socket.on('join', room => {
     console.log('room name: ', room);
@@ -22,19 +30,24 @@ caps.on('connection', socket => {
 
   socket.on('pickup', payload => {
     console.log('EVENT: ', payload);
-    caps.emit('pickup', payload); // emit to all in the namespace
+    // caps.emit('pickup', payload); // emit to all in the namespace
   });
 
   socket.on('in-transit', payload => {
     console.log('EVENT: ', payload);
-    caps.emit('in-transit', payload); 
+    // caps.emit('in-transit', payload); 
   });
 
   socket.on('delivered', payload => {
     console.log('EVENT: ', payload);
     caps.to(payload.payload.store).emit('delivered', payload); 
+    caps.emit('received', payload);
   });
 });
 
+caps.on('message', message => {
+  console.log('messages: ', message.payload.payload);
+  caps.emit('received', message.payload.payload);
+});
 
 
